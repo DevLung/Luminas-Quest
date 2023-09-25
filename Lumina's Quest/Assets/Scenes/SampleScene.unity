@@ -508,7 +508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 1107620137}
   capsuleCollider: {fileID: 1107620138}
-  moveSpeed: 5
+  moveSpeed: 300
   jumpHeight: 400
   doubleJump: 1
 --- !u!1 &1412349985
