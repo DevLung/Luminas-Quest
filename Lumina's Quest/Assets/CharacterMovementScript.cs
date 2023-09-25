@@ -7,9 +7,11 @@ using static UnityEditor.Timeline.TimelinePlaybackControls;
 public class CharacterMovementScript : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
+    public CapsuleCollider2D capsuleCollider;
     public float moveSpeed;
     public float jumpHeight;
     private PlayerInputActions playerInput;
+    private Collision2D lastCollision;
 
     private void Start()
     {
@@ -25,10 +27,22 @@ public class CharacterMovementScript : MonoBehaviour
         rigidBody.transform.position += new Vector3(inputVector.x, 0, 0) * moveSpeed;
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        lastCollision = collision;
+    }
+
     private void Jump(InputAction.CallbackContext context)
     {
-        // on jump input
-        rigidBody.AddForce(Vector3.up * jumpHeight, ForceMode2D.Impulse);
-        Debug.Log("right" + context.phase);
+        // on jump input while on floor
+        if (capsuleCollider.IsTouching(lastCollision.collider) && lastCollision.collider.tag == "floor")
+        {
+            float feetHeight = capsuleCollider.transform.position.y - capsuleCollider.bounds.extents.y;
+            float FloorHeight = lastCollision.collider.transform.position.y + lastCollision.collider.bounds.extents.y;
+            if (feetHeight >= FloorHeight)
+            {
+                rigidBody.AddForce(Vector3.up * jumpHeight, ForceMode2D.Impulse);
+            }
+        }
     }
 }
