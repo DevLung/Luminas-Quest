@@ -509,7 +509,8 @@ MonoBehaviour:
   rigidBody: {fileID: 1107620137}
   capsuleCollider: {fileID: 1107620138}
   moveSpeed: 5
-  jumpHeight: 300
+  jumpHeight: 400
+  doubleJump: 1
 --- !u!1 &1412349985
 GameObject:
   m_ObjectHideFlags: 0
