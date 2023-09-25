@@ -12,7 +12,7 @@ public class CharacterMovementScript : MonoBehaviour
     public float jumpHeight;
     public bool doubleJump;
     private int jumpCount;
-    private PlayerInputActions playerInput;
+    public PlayerInputActions playerInput;
     private Collision2D lastCollision;
 
     private void Start()
@@ -22,11 +22,11 @@ public class CharacterMovementScript : MonoBehaviour
         playerInput.Movement.jump.performed += Jump;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         // on move input
         Vector2 inputVector = playerInput.Movement.move.ReadValue<Vector2>();
-        rigidBody.transform.position += new Vector3(inputVector.x, 0, 0) * moveSpeed;
+        rigidBody.transform.position += new Vector3(inputVector.x, 0, 0) * moveSpeed * Time.deltaTime;
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -44,15 +44,21 @@ public class CharacterMovementScript : MonoBehaviour
             float FloorHeight = lastCollision.collider.transform.position.y + lastCollision.collider.bounds.extents.y;
             if (jumpCount == 1 || feetHeight >= FloorHeight)
             {
-                rigidBody.AddForce(Vector3.up * jumpHeight, ForceMode2D.Impulse);
+                float lastNegativeVelocity = 0;
+                if (rigidBody.GetRelativePointVelocity(Vector2.zero).y < 0)
+                {
+                    lastNegativeVelocity = -rigidBody.GetRelativePointVelocity(Vector2.zero).y;
+                }
+                rigidBody.AddForce(Vector3.up * (jumpHeight + lastNegativeVelocity), ForceMode2D.Impulse);
+                lastNegativeVelocity = 0;
                 // increment jump count if double jump is enabled and reset if it is higher than 1 so you can only jump in the air once 
                 if (doubleJump)
                 {
-                    jumpCount++;
-                    if (jumpCount > 1)
+                    if (jumpCount > 1 || capsuleCollider.IsTouching(lastCollision.collider) && lastCollision.collider.tag == "floor" && feetHeight >= FloorHeight)
                     {
                         jumpCount = 0;
                     }
+                    jumpCount++;
                 }
             }
         }
