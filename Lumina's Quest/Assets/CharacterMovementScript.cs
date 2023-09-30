@@ -15,10 +15,13 @@ public class CharacterMovementScript : MonoBehaviour
     public PlayerInputActions playerInput;
     private Collision2D lastCollision;
 
+
     private void Start()
     {
+        // enable Movement InputActions
         playerInput = new PlayerInputActions();
         playerInput.Movement.Enable();
+        // subscribe Jump method to performed event of jump input
         playerInput.Movement.jump.performed += Jump;
     }
 
@@ -33,6 +36,7 @@ public class CharacterMovementScript : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        // save data of last collision
         lastCollision = collision;
     }
 
@@ -53,7 +57,6 @@ public class CharacterMovementScript : MonoBehaviour
                 lastNegativeVelocity = -rigidBody.GetRelativePointVelocity(Vector2.zero).y;
             }
             rigidBody.AddForce(Vector3.up * (jumpHeight + lastNegativeVelocity), ForceMode2D.Impulse);
-            lastNegativeVelocity = 0;
 
             // increment jump count if double jump is enabled and reset if it is higher than 1 so you can only jump in the air once 
             if (doubleJump)
