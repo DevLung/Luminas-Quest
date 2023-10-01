@@ -30,7 +30,7 @@ public class CharacterMovementScript : MonoBehaviour
     {
         // on move input
         Vector2 inputVector = playerInput.Movement.move.ReadValue<Vector2>();
-        rigidBody.transform.position += new Vector3(inputVector.x, 0, 0) * moveSpeed * Time.deltaTime;
+        rigidBody.transform.position += moveSpeed * Time.deltaTime * new Vector3(inputVector.x, 0, 0);
     }
 
 
@@ -54,7 +54,7 @@ public class CharacterMovementScript : MonoBehaviour
             float lastNegativeVelocity = 0;
             if (rigidBody.GetRelativePointVelocity(Vector2.zero).y < 0)
             {
-                lastNegativeVelocity = -rigidBody.GetRelativePointVelocity(Vector2.zero).y;
+                lastNegativeVelocity = -rigidBody.velocity.y;
             }
             rigidBody.AddForce(Vector3.up * (jumpHeight + lastNegativeVelocity), ForceMode2D.Impulse);
 
