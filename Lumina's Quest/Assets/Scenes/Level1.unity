@@ -625,8 +625,8 @@ GameObject:
   - component: {fileID: 1107620134}
   - component: {fileID: 1107620137}
   - component: {fileID: 1107620142}
-  - component: {fileID: 1107620139}
   - component: {fileID: 1107620141}
+  - component: {fileID: 1107620139}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -683,7 +683,7 @@ SpriteRenderer:
   m_Size: {x: 22.399998, y: 24.32407}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1107620135
@@ -742,6 +742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 1107620137}
   poligonCollider: {fileID: 1107620142}
+  animator: {fileID: 1107620141}
   moveSpeed: 65
   jumpHeight: 75
   doubleJump: 1
