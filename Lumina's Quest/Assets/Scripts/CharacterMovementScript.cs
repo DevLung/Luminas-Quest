@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
@@ -8,12 +10,14 @@ public class CharacterMovementScript : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
     public PolygonCollider2D poligonCollider;
+    public Animator animator;
     public float moveSpeed;
     public float jumpHeight;
     public bool doubleJump;
     private int jumpCount;
     public PlayerInputActions playerInput;
     private Collision2D lastCollision;
+    private Vector2 lastPosition;
 
 
     private void Start()
@@ -31,6 +35,15 @@ public class CharacterMovementScript : MonoBehaviour
         // on move input
         Vector2 inputVector = playerInput.Movement.move.ReadValue<Vector2>();
         rigidBody.transform.position += moveSpeed * Time.deltaTime * new Vector3(inputVector.x, 0, 0);
+    }
+
+
+    private void FixedUpdate()
+    {
+        // sync character velocity with velocity variable in animator
+        animator.SetFloat("xVelocity", Math.Abs(transform.position.x - lastPosition.x));
+        Debug.Log(Math.Abs(transform.position.x - lastPosition.x));
+        lastPosition = transform.position;
     }
 
 
