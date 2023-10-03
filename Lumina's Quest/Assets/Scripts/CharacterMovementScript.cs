@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class CharacterMovementScript : MonoBehaviour
 {
@@ -40,7 +38,7 @@ public class CharacterMovementScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // sync character velocity with velocity variable in animator
+        // sync character velocity with velocity variable in animator to control when the running animation is triggered
         animator.SetFloat("xVelocity", Math.Abs(transform.position.x - lastPosition.x));
         Debug.Log(Math.Abs(transform.position.x - lastPosition.x));
         lastPosition = transform.position;
