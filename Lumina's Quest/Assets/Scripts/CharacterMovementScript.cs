@@ -71,7 +71,7 @@ public class CharacterMovementScript : MonoBehaviour
     {
         // calculate height of character feet and surface of floor
         feetHeight = poligonCollider.transform.position.y - poligonCollider.bounds.extents.y;
-        floorHeight = lastCollision.collider.transform.position.y + lastCollision.collider.bounds.extents.y;
+        floorHeight = lastCollision.collider.bounds.extents.y + lastCollision.collider.bounds.extents.y;
 
         // on jump input while on floor, only if the character feet are above the top surface of floor or after first jump if double jump is enabled
         if (jumpCount == 1 || poligonCollider.IsTouching(lastCollision.collider) && lastCollision.collider.CompareTag("floor") && feetHeight >= floorHeight)
