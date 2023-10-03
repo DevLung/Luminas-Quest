@@ -18,7 +18,7 @@ public class CharacterMovementScript : MonoBehaviour
     private float floorHeight;
     private int jumpCount;
     private int frameOfLastFailedJumpInput;
-    private bool lastJumpSuccessful;
+    private bool lastJumpSuccessful = true;
     private Collision2D lastCollision;
     private Vector2 lastPosition;
 
@@ -44,7 +44,7 @@ public class CharacterMovementScript : MonoBehaviour
     private void FixedUpdate()
     {
         // sync character velocity with velocity variable in animator to control when the running animation is triggered
-        animator.SetFloat("xVelocity", Math.Abs(transform.position.x - lastPosition.x));
+        animator.SetFloat("xVelocity", transform.position.x - lastPosition.x);
         lastPosition = transform.position;
     }
 
