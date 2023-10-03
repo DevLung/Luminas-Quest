@@ -96,6 +96,7 @@ public class CharacterMovementScript : MonoBehaviour
         }
         // jump
         rigidBody.AddForce(Vector3.up * (jumpHeight + lastNegativeVelocity), ForceMode2D.Impulse);
+        animator.Play("jumpup");
 
         // increment jump count if double jump is enabled and reset if it is higher than 1 so you can only jump in the air once 
         if (doubleJump)
