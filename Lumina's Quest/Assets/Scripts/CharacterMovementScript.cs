@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class CharacterMovementScript : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
-    public PolygonCollider2D poligonCollider;
+    public CapsuleCollider2D capsuleCollider;
     public Animator animator;
     public PlayerInputActions playerInput;
     public float moveSpeed;
@@ -49,18 +49,29 @@ public class CharacterMovementScript : MonoBehaviour
     }
 
 
+    private bool CharacterTouchesPlatformSurface()
+    {
+        //ContactPoint2D[] contactPoints = new ContactPoint2D[10];
+        //lastCollision.GetContacts(contactPoints);
+        //foreach (ContactPoint2D contactPoint in contactPoints)
+        //{
+        //    if (Vector3.Distance(contactPoint.point, transform.position - capsuleCollider.bounds.extents) < 0.2)
+        //    {
+        //        return true;
+        //    }
+        //}
+        return false;
+        // TODO fix
+    }
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // save data of last collision
+        // save data of last collider
         lastCollision = collision;
 
-
-        // calculate height of character feet and surface of floor
-        feetHeight = poligonCollider.transform.position.y - poligonCollider.bounds.extents.y;
-        floorHeight = lastCollision.collider.transform.position.y + lastCollision.collider.bounds.extents.y;
-
         // jump if an unsuccessful jump input occurred less than <frameBufferSize> frames ago and the character reaches the floor
-        if (!lastJumpSuccessful && Time.frameCount - frameOfLastFailedJumpInput < frameBufferSize && collision.collider.CompareTag("floor") && feetHeight >= floorHeight)
+        if (!lastJumpSuccessful && Time.frameCount - frameOfLastFailedJumpInput < frameBufferSize && lastCollision.collider.CompareTag("floor") && CharacterTouchesPlatformSurface())
         {
             Jump();
         }
@@ -69,12 +80,8 @@ public class CharacterMovementScript : MonoBehaviour
 
     private void JumpInput(InputAction.CallbackContext context)
     {
-        // calculate height of character feet and surface of floor
-        feetHeight = poligonCollider.transform.position.y - poligonCollider.bounds.extents.y;
-        floorHeight = lastCollision.collider.bounds.extents.y + lastCollision.collider.bounds.extents.y;
-
         // on jump input while on floor, only if the character feet are above the top surface of floor or after first jump if double jump is enabled
-        if (jumpCount == 1 || poligonCollider.IsTouching(lastCollision.collider) && lastCollision.collider.CompareTag("floor") && feetHeight >= floorHeight)
+        if (jumpCount == 1 || capsuleCollider.IsTouching(lastCollision.collider) && lastCollision.collider.CompareTag("floor") && CharacterTouchesPlatformSurface())
         {
             Jump();
         }
@@ -101,7 +108,7 @@ public class CharacterMovementScript : MonoBehaviour
         // increment jump count if double jump is enabled and reset if it is higher than 1 so you can only jump in the air once 
         if (doubleJump)
         {
-            if (jumpCount > 1 || poligonCollider.IsTouching(lastCollision.collider) && lastCollision.collider.CompareTag("floor") && feetHeight >= floorHeight)
+            if (jumpCount > 1 || capsuleCollider.IsTouching(lastCollision.collider) && lastCollision.collider.CompareTag("floor") && CharacterTouchesPlatformSurface())
             {
                 jumpCount = 0;
             }
