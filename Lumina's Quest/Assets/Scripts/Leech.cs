@@ -4,44 +4,41 @@ using UnityEngine;
 
 public class Leech : MonoBehaviour
 {
-    public float moveSpeed = 1.0f;  // speed of the leech
-
-    private Rigidbody2D rb2d;
+    public Rigidbody2D rigidBody;
+    public Animator animator;
+    public float moveSpeed;
     private bool movingRight = true;
-    private Animator animator;
 
-    void Start()
+
+    void FixedUpdate()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        // make velocity negative when moving left
+        float horizontalMovement = movingRight ? 1 : -1;
+
+        // move leech
+        rigidBody.velocity = new Vector2(horizontalMovement * moveSpeed, rigidBody.velocity.y);
     }
 
-    void Update()
-    {
-        
-        float horizontalMovement = movingRight ? 1.0f : -1.0f;
 
-        
-        rb2d.velocity = new Vector2(horizontalMovement * moveSpeed, rb2d.velocity.y);
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.CompareTag("floor"))
+        if (collision.CompareTag("floor"))
         {
             // Change direction when hitting an obstacle.
             FlipDirection();
         }
     }
 
+
     void FlipDirection()
     {
         // Flip the leech direction.
         movingRight = !movingRight;
+        Debug.Log(movingRight);
 
         // Flip the leech sprite horizontally.
-        Vector3 newScale = transform.localScale;
-        newScale.x *= -1;
-        transform.localScale = newScale;
+        Vector3 flippedScale = transform.localScale;
+        flippedScale.x *= -1;
+        transform.localScale = flippedScale;
     }
 }
