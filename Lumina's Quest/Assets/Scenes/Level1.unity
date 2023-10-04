@@ -4659,8 +4659,8 @@ GameObject:
   - component: {fileID: 1615177288}
   - component: {fileID: 1615177296}
   - component: {fileID: 1615177295}
-  - component: {fileID: 1615177291}
   - component: {fileID: 1615177293}
+  - component: {fileID: 1615177291}
   m_Layer: 0
   m_Name: Leech
   m_TagString: Untagged
@@ -4866,7 +4866,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.6, y: -1}
-  m_Size: {x: 8, y: 3}
+  m_Size: {x: 7, y: 3}
   m_Direction: 1
 --- !u!1 &1857417687
 GameObject:

@@ -34,7 +34,6 @@ public class Leech : MonoBehaviour
     {
         // Flip the leech direction.
         movingRight = !movingRight;
-        Debug.Log(movingRight);
 
         // Flip the leech sprite horizontally.
         Vector3 flippedScale = transform.localScale;
