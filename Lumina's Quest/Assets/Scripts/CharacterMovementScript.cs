@@ -7,19 +7,17 @@ using UnityEngine.InputSystem;
 public class CharacterMovementScript : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
-    public CapsuleCollider2D capsuleCollider;
+    public CircleCollider2D feetTrigger;
     public Animator animator;
     public PlayerInputActions playerInput;
     public float moveSpeed;
     public float jumpHeight;
     public int frameBufferSize;
     public bool doubleJump;
-    private float feetHeight;
-    private float floorHeight;
     private int jumpCount;
     private int frameOfLastFailedJumpInput;
     private bool lastJumpSuccessful = true;
-    private Collision2D lastCollision;
+    private Collider2D lastCollider;
     private Vector2 lastPosition;
 
 
@@ -49,29 +47,13 @@ public class CharacterMovementScript : MonoBehaviour
     }
 
 
-    private bool CharacterTouchesPlatformSurface()
-    {
-        //ContactPoint2D[] contactPoints = new ContactPoint2D[10];
-        //lastCollision.GetContacts(contactPoints);
-        //foreach (ContactPoint2D contactPoint in contactPoints)
-        //{
-        //    if (Vector3.Distance(contactPoint.point, transform.position - capsuleCollider.bounds.extents) < 0.2)
-        //    {
-        //        return true;
-        //    }
-        //}
-        return false;
-        // TODO fix
-    }
-
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         // save data of last collider
-        lastCollision = collision;
+        lastCollider = collision;
 
         // jump if an unsuccessful jump input occurred less than <frameBufferSize> frames ago and the character reaches the floor
-        if (!lastJumpSuccessful && Time.frameCount - frameOfLastFailedJumpInput < frameBufferSize && lastCollision.collider.CompareTag("floor") && CharacterTouchesPlatformSurface())
+        if (!lastJumpSuccessful && Time.frameCount - frameOfLastFailedJumpInput < frameBufferSize)
         {
             Jump();
         }
@@ -81,7 +63,7 @@ public class CharacterMovementScript : MonoBehaviour
     private void JumpInput(InputAction.CallbackContext context)
     {
         // on jump input while on floor, only if the character feet are above the top surface of floor or after first jump if double jump is enabled
-        if (jumpCount == 1 || capsuleCollider.IsTouching(lastCollision.collider) && lastCollision.collider.CompareTag("floor") && CharacterTouchesPlatformSurface())
+        if (jumpCount == 1 || feetTrigger.IsTouching(lastCollider))
         {
             Jump();
         }
@@ -108,7 +90,7 @@ public class CharacterMovementScript : MonoBehaviour
         // increment jump count if double jump is enabled and reset if it is higher than 1 so you can only jump in the air once 
         if (doubleJump)
         {
-            if (jumpCount > 1 || capsuleCollider.IsTouching(lastCollision.collider) && lastCollision.collider.CompareTag("floor") && CharacterTouchesPlatformSurface())
+            if (jumpCount > 1 || feetTrigger.IsTouching(lastCollider))
             {
                 jumpCount = 0;
             }
