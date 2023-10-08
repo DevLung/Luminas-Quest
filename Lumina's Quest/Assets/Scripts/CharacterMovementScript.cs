@@ -41,8 +41,11 @@ public class CharacterMovementScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // sync character velocity with velocity variable in animator to control when the running animation is triggered
+        // set onGround parameter in animator
+        animator.SetBool("onGround", lastCollider != null && feetTrigger.IsTouching(lastCollider));
+        // sync character velocity with velocity parameters in animator to control when the running animation is triggered
         animator.SetFloat("xVelocity", transform.position.x - lastPosition.x);
+        animator.SetFloat("yVelocity", transform.position.y - lastPosition.y);
         lastPosition = transform.position;
     }
 
