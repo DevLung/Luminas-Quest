@@ -27,4 +27,3 @@
 - [TikTok](https://www.tiktok.com/@derlung)
 - [Twitter](https://twitter.com/DerLungYT)
 - [Twitch](https://www.twitch.tv/derlung_live)
-- [Website](https://derlungyt.webnode.com)
